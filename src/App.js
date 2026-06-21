@@ -43,7 +43,7 @@ const App = () => {
           onClick={() => setIsSidebarOpen(true)}
           className="absolute top-4 left-4 md:top-6 md:left-6 z-[3000] bg-white p-2.5 md:p-3 rounded-xl shadow-md border border-slate-200 text-[#00529B] hover:scale-105 hover:shadow-lg transition-all duration-300"
         >
-          <Menu size={18} md:size={20} strokeWidth={2.5} />
+          <Menu className="w-[18px] h-[18px] md:w-[20px] md:h-[20px]" strokeWidth={2.5} />
         </button>
       )}
       
@@ -124,7 +124,6 @@ const App = () => {
 
           {/* TAB 4: MASTER REPOSITORY (DATABASE) */}
           {activeTab === 'database' && (
-            // FIX 6: Fleksibilitas padding mobile (p-4 md:p-8)
             <div className="h-full p-4 md:p-8 overflow-y-auto custom-scrollbar animate-in fade-in duration-500">
               <VesselDatabase vesselData={vesselData} />
             </div>
