@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Map as MapIcon } from 'lucide-react';
 import MapView from './MapView';
 import ActivityBreakdown from './ActivityBreakdown';
 import MonthlyEmissionTrend from './MonthlyEmissionTrend';
