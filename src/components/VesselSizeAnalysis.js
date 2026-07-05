@@ -24,6 +24,11 @@ const VesselSizeAnalysis = ({ vesselData }) => {
 
     const getSortWeight = (label) => {
       const str = label.toLowerCase();
+      
+      // Jika kategori adalah "lainnya" atau kosong, lempar ke paling bawah
+      if (str === "lainnya" || str === "") return -1;
+
+      // Pengecekan berbasis teks (opsional jika label menggunakan nama kelas)
       if (str.includes('ultra')) return 12000;
       if (str.includes('new panamax')) return 8000;
       if (str.includes('post-panamax') || str.includes('post panamax')) return 5000;
@@ -32,8 +37,11 @@ const VesselSizeAnalysis = ({ vesselData }) => {
       if (str.includes('feeder')) return 1000;
       if (str.includes('small')) return 100;
       
-      const match = label.match(/\d+/);
+      // PERBAIKAN SORTING: Hapus tanda titik pada format ribuan ("1.000" menjadi "1000") sebelum diekstrak angkanya
+      const cleanStr = str.replace(/\./g, '');
+      const match = cleanStr.match(/\d+/);
       if (match) return parseInt(match[0], 10);
+      
       return 0; 
     };
 

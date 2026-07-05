@@ -62,7 +62,7 @@ const MapView = ({ vessels = [] }) => {
     return Object.values(routeMap).map((r) => {
       const totalCO2e = r.co2_total + (r.ch4_total * GWP_CH4) + (r.n2o_total * GWP_N2O);
       return { ...r, co2e: totalCO2e };
-    }).sort((a, b) => b.co2e - a.co2e);
+    }).sort((a, b) => b.calls - a.calls); // PERBAIKAN LOGIKA: Diurutkan berdasarkan jumlah kunjungan (calls/trip)
   }, [vessels]);
 
   const grandTotalCO2e = useMemo(() => {

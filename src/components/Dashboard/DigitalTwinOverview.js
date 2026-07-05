@@ -89,12 +89,14 @@ const DigitalTwinOverview = ({ vesselData }) => {
             <p className="text-sm font-medium text-blue-100 mb-2">Total Emisi Tahunan</p>
             <div className="flex items-baseline gap-2">
               <h3 className="text-4xl font-bold tracking-tight">{stats.co2e}</h3>
-              <span className="text-sm font-medium text-blue-200">Ton CO2e</span>
+              <span className="text-sm font-medium text-blue-200">Ton CO₂e</span>
             </div>
           </div>
           <p className="text-xs text-blue-200 mt-6 relative z-10">Total akumulasi nilai GWP dari seluruh log aktivitas.</p>
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"></div>
         </div>
+        
+        {/* KOTAK FASE MANUVER (Perbaikan Teks) */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#6366F1] rounded-r-md"></div>
           <div className="pl-3">
@@ -103,10 +105,11 @@ const DigitalTwinOverview = ({ vesselData }) => {
               <h4 className="text-2xl font-bold text-slate-900 tracking-tight">{stats.mnv}</h4>
               <span className="text-[10px] font-semibold text-slate-400">TON/CALL</span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-1.5">Estimasi emisi propulsi utama di kolam pelabuhan.</p>
+            <p className="text-[10px] text-slate-400 mt-1.5">Rata-rata emisi propulsi per 1 kali kunjungan kapal.</p>
           </div>
         </div>
 
+        {/* KOTAK FASE SANDAR (Perbaikan Teks) */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#06B6D4] rounded-r-md"></div>
           <div className="pl-3">
@@ -115,10 +118,11 @@ const DigitalTwinOverview = ({ vesselData }) => {
               <h4 className="text-2xl font-bold text-slate-900 tracking-tight">{stats.brt}</h4>
               <span className="text-[10px] font-semibold text-slate-400">TON/CALL</span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-1.5">Kalkulasi jejak karbon selama manuver penambatan.</p>
+            <p className="text-[10px] text-slate-400 mt-1.5">Rata-rata jejak karbon manuver penambatan per kunjungan.</p>
           </div>
         </div>
 
+        {/* KOTAK FASE DERMAGA (Perbaikan Teks) */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#10B981] rounded-r-md"></div>
           <div className="pl-3">
@@ -127,7 +131,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
               <h4 className="text-2xl font-bold text-slate-900 tracking-tight">{stats.hot}</h4>
               <span className="text-[10px] font-semibold text-slate-400">TON/CALL</span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-1.5">Akumulasi gas buang saat idle (Hotelling).</p>
+            <p className="text-[10px] text-slate-400 mt-1.5">Rata-rata gas buang saat idle (Hotelling) per kunjungan.</p>
           </div>
         </div>
 
@@ -145,7 +149,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           <div className="p-6 hover:bg-slate-50/50 transition-colors">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-[#00529B]"></div>
-              <p className="text-xs font-medium text-slate-600">Karbon Dioksida (CO2)</p>
+              <p className="text-xs font-medium text-slate-600">Karbon Dioksida (CO₂)</p>
             </div>
             <div className="flex items-baseline gap-1.5">
               <h4 className="text-2xl font-bold text-slate-900">{stats.co2}</h4>
@@ -156,7 +160,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           <div className="p-6 hover:bg-slate-50/50 transition-colors">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-[#D97706]"></div>
-              <p className="text-xs font-medium text-slate-600">Dinitrogen Oksida (N2O)</p>
+              <p className="text-xs font-medium text-slate-600">Dinitrogen Oksida (N₂O)</p>
             </div>
             <div className="flex items-baseline gap-1.5">
               <h4 className="text-2xl font-bold text-slate-900">{stats.n2o}</h4>
@@ -167,7 +171,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           <div className="p-6 hover:bg-slate-50/50 transition-colors">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-[#059669]"></div>
-              <p className="text-xs font-medium text-slate-600">Metana (CH4)</p>
+              <p className="text-xs font-medium text-slate-600">Metana (CH₄)</p>
             </div>
             <div className="flex items-baseline gap-1.5">
               <h4 className="text-2xl font-bold text-slate-900">{stats.ch4}</h4>
