@@ -2,10 +2,21 @@ import React, { useMemo } from 'react';
 
 const VesselSizeAnalysis = ({ vesselData }) => {
   const sizeStats = useMemo(() => {
+    if (!vesselData || vesselData.length === 0) return [];
+    
     const stats = {};
     
-    vesselData.forEach(v => {
-      const size = v["Size Range"] || "Lainnya"; 
+    const parseNum = (val) => {
+      if (val === undefined || val === null) return 0;
+      if (typeof val === 'number') return val;
+      const cleanVal = val.toString().replace(/,/g, '').trim();
+      const num = Number(cleanVal);
+      return isNaN(num) ? 0 : num;
+    };
+
+    vesselData.forEach((v, index) => {
+      const size = v["Size Range"] || v.Size_Range || "Lainnya"; 
+      
       if (!stats[size]) {
         stats[size] = {
           label: size,
@@ -14,21 +25,28 @@ const VesselSizeAnalysis = ({ vesselData }) => {
         };
       }
       
-      // PERBAIKAN LOGIKA: Penambahan Number() agar tipe data String dari database bisa dijumlahkan matematis
-      stats[size].totalCO2 += (Number(v.Total_CO2) || 0);
-      stats[size].totalN2O += (Number(v.Total_N2O) || 0);
-      stats[size].totalCH4 += (Number(v.Total_CH4) || 0);
-      stats[size].mcrSum += (Number(v["Propulsion MCR (kW)"]) || 0);
+      // DIAGNOSTIK TAKTIS: Memunculkan 3 sampel data "Lainnya" di Console F12 Browser
+      if (size === "Lainnya" && stats[size].count < 3) {
+        console.log(`[DATA DIAGNOSTIK LAINNYA - SAMPEL KE-${stats[size].count + 1}]:`, v);
+      }
+      
+      // PERBAIKAN TOLERANSI KEY: Mendukung variasi penulisan huruf besar/kecil dari eksportasi database
+      const co2Val = v.Total_CO2 || v.total_co2 || v.CO2 || v.co2 || 0;
+      const n2oVal = v.Total_N2O || v.total_n2o || v.N2O || v.n2o || 0;
+      const ch4Val = v.Total_CH4 || v.total_ch4 || v.CH4 || v.ch4 || 0;
+      const mcrVal = v["Propulsion MCR (kW)"] || v.Propulsion_MCR_kW || v.MCR || v.mcr || v.PROPULSION_MCR || 0;
+
+      stats[size].totalCO2 += parseNum(co2Val);
+      stats[size].totalN2O += parseNum(n2oVal);
+      stats[size].totalCH4 += parseNum(ch4Val);
+      stats[size].mcrSum += parseNum(mcrVal);
       stats[size].count += 1;
     });
 
     const getSortWeight = (label) => {
       const str = label.toLowerCase();
-      
-      // Jika kategori adalah "lainnya" atau kosong, lempar ke paling bawah
       if (str === "lainnya" || str === "") return -1;
 
-      // Pengecekan berbasis teks (opsional jika label menggunakan nama kelas)
       if (str.includes('ultra')) return 12000;
       if (str.includes('new panamax')) return 8000;
       if (str.includes('post-panamax') || str.includes('post panamax')) return 5000;
@@ -37,7 +55,6 @@ const VesselSizeAnalysis = ({ vesselData }) => {
       if (str.includes('feeder')) return 1000;
       if (str.includes('small')) return 100;
       
-      // PERBAIKAN SORTING: Hapus tanda titik pada format ribuan ("1.000" menjadi "1000") sebelum diekstrak angkanya
       const cleanStr = str.replace(/\./g, '');
       const match = cleanStr.match(/\d+/);
       if (match) return parseInt(match[0], 10);
@@ -65,7 +82,6 @@ const VesselSizeAnalysis = ({ vesselData }) => {
           </h3>
           <p className="text-xs text-slate-500 font-medium mt-0.5">Inventarisasi emisi GRK berdasarkan kapasitas TEUs.</p>
         </div>
-        {/* UI PERBAIKAN: Icon dihapus, hanya menyisakan badge kategori */}
         <div className="bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-md text-[10px] font-bold text-slate-500">
           {sizeStats.length} Kategori
         </div>
@@ -89,7 +105,7 @@ const VesselSizeAnalysis = ({ vesselData }) => {
             className="grid grid-cols-12 gap-4 py-4 px-2 border-b border-slate-100 last:border-0 hover:bg-slate-50/70 transition-colors items-center group rounded-lg"
           >
             
-            {/* KIRI: Informasi Utama Kapal */}
+            {/* KIRI */}
             <div className="col-span-5 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00529B]" />
@@ -98,7 +114,6 @@ const VesselSizeAnalysis = ({ vesselData }) => {
                 </h4>
               </div>
               <div className="flex items-center gap-2 ml-3.5">
-                {/* UI PERBAIKAN: Log diganti Calls */}
                 <span className="text-[9px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                   {item.count} Calls
                 </span>
@@ -108,7 +123,7 @@ const VesselSizeAnalysis = ({ vesselData }) => {
               </div>
             </div>
 
-            {/* KANAN: Grid Metrik 3 Gas */}
+            {/* KANAN */}
             <div className="col-span-7 grid grid-cols-3 text-right">
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-bold text-slate-800 group-hover:text-[#00529B] transition-colors">

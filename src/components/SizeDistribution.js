@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-// Sub-komponen Grafik & Data Ekstremum (Disatukan tanpa kotak pembungkus)
+// Sub-komponen Grafik & Data Ekstremum
 const IntegratedChartColumn = ({ title, data, barDataKey, statDataKey, color, extremes }) => {
   return (
     <div className="flex flex-col h-full font-['Poppins',sans-serif] w-full">
@@ -51,37 +51,37 @@ const IntegratedChartColumn = ({ title, data, barDataKey, statDataKey, color, ex
         </ResponsiveContainer>
       </div>
 
-      {/* Extremes Area (Tanpa Card, Langsung menyatu dengan kolom) */}
+      {/* Extremes Area */}
       <div className="mt-auto pt-5 border-t border-slate-100 flex flex-col gap-4">
         {/* Peak */}
         <div className="flex justify-between items-center group">
           <div className="flex flex-col">
-            <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kontributor Tertinggi</span>
+            <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kunjungan Tunggal Tertinggi</span>
             <span className="text-xs font-bold text-slate-700 truncate max-w-[140px]" title={extremes?.max?.VESSEL_NAME}>
               {extremes?.max?.VESSEL_NAME || 'N/A'}
             </span>
           </div>
           <div className="text-right flex flex-col">
             <span className="text-sm font-bold leading-none mb-1" style={{ color: color }}>
-              {extremes?.max?.[statDataKey]?.toFixed(3) || 0}
+              {Number(extremes?.max?.[statDataKey] || 0).toFixed(4)}
             </span>
-            <span className="text-[9px] font-medium text-slate-400">Ton</span>
+            <span className="text-[9px] font-medium text-slate-400">Ton/Call</span>
           </div>
         </div>
 
         {/* Low */}
         <div className="flex justify-between items-center group">
           <div className="flex flex-col">
-            <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kontributor Terendah</span>
+            <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kunjungan Tunggal Terendah</span>
             <span className="text-xs font-bold text-slate-700 truncate max-w-[140px]" title={extremes?.min?.VESSEL_NAME}>
               {extremes?.min?.VESSEL_NAME || 'N/A'}
             </span>
           </div>
           <div className="text-right flex flex-col">
             <span className="text-sm font-bold leading-none mb-1 text-slate-500">
-              {extremes?.min?.[statDataKey]?.toFixed(3) || 0}
+              {Number(extremes?.min?.[statDataKey] || 0).toFixed(4)}
             </span>
-            <span className="text-[9px] font-medium text-slate-400">Ton</span>
+            <span className="text-[9px] font-medium text-slate-400">Ton/Call</span>
           </div>
         </div>
       </div>
@@ -95,7 +95,17 @@ const SizeDistribution = ({ vesselData }) => {
     if (!vesselData || vesselData.length === 0) return null;
 
     const getExtremes = (key) => {
-      const sorted = [...vesselData].sort((a, b) => (Number(b[key]) || 0) - (Number(a[key]) || 0));
+      // PERBAIKAN: Kembali menggunakan data per baris (Tunggal / Per Visit)
+      // Filter membuang data yang emisinya 0 agar tidak terbaca sebagai terendah
+      const validData = vesselData.filter(v => Number(v[key]) > 0);
+      
+      if (validData.length === 0) {
+        return { max: null, min: null };
+      }
+
+      // Mengurutkan dari kunjungan tunggal paling kotor ke paling bersih
+      const sorted = [...validData].sort((a, b) => Number(b[key]) - Number(a[key]));
+      
       return {
         max: sorted[0],
         min: sorted[sorted.length - 1]
@@ -143,19 +153,17 @@ const SizeDistribution = ({ vesselData }) => {
   return (
     <div className="w-full bg-white rounded-xl p-8 md:p-10 shadow-sm border border-slate-200 flex flex-col font-['Poppins',sans-serif]">
       
-      {/* HEADER UTAMA: Dibuat super clean dengan garis pembatas bawah */}
+      {/* HEADER UTAMA */}
       <div className="mb-8 pb-6 border-b border-slate-100 flex justify-between items-center">
         <div>
           <h3 className="text-sm font-semibold text-slate-800">
             Distribusi Emisi Kapal Berdasarkan Parameter Global Warming Potential (GWP)
           </h3>
-          <p className="text-xs text-slate-500 font-medium mt-1">Klasifikasi analitik berdasarkan kapasitas kapal.</p>
+          <p className="text-xs text-slate-500 font-medium mt-1">Klasifikasi analitik berdasarkan kapasitas armada.</p>
         </div>
       </div>
 
-      {/* GRID 3 KOLOM UTAMA (The Unified Column Approach)
-        Menggunakan `divide-x` agar ada garis pemisah halus antar gas secara vertikal di desktop.
-      */}
+      {/* GRID 3 KOLOM UTAMA */}
       <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 w-full">
         
         {/* Kolom 1: CO2 */}

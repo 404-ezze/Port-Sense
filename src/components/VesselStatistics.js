@@ -52,7 +52,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Top 5 Kapal Kontributor Emisi</h3>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">Identifikasi penyumbang jejak karbon tertinggi berdasarkan total akumulasi operasional.</p>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">Identifikasi penyumbang jejak karbon tertinggi berdasarkan per kunjungan operasional.</p>
           </div>
         </div>
 
