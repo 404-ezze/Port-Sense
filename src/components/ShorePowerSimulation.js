@@ -3,9 +3,7 @@ import {
   Zap, ShieldCheck, TrendingDown, Wind, Droplets, Info, AlertTriangle,
 } from 'lucide-react';
 
-// ============================================================================
-// DASAR METODOLOGI (ACTIVITY-BASED EMISSION) - TIDAK DIUBAH
-// ============================================================================
+
 const GWP = { CO2: 1, CH4: 27.2, N2O: 273 };
 const NET_OPS_REDUCTION = { CO2: 0.85, CH4: 0.90, N2O: 0.88 };
 const MAX_FUEL_REDUCTION = { CO2: 0.25, CH4: 0.05, N2O: 0.10 };
@@ -169,7 +167,7 @@ const ShorePowerSimulation = ({ vesselData }) => {
       {/* HEADER UTAMA */}
       <div className="mb-8 border-b border-slate-100 pb-5">
         <h3 className="text-base font-semibold text-slate-800 tracking-tight">
-          Strategic Mitigation Intelligence
+          Mesin Simulasi Mitigasi
         </h3>
         <p className="text-xs text-slate-500 font-medium mt-1">
           Simulasi Pengurangan Emisi Berdasarkan Faktor Dominan JICT (Activity-Based)

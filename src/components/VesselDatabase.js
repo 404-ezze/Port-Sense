@@ -11,24 +11,34 @@ const VesselDatabase = ({ vesselData }) => {
     setCurrentPage(1); 
   };
 
-  // Logika Filter Diperbarui: Menyembunyikan kategori "Lainnya"
-  const filteredData = vesselData.filter(v => {
-    // 1. Cek apakah Size Range kosong atau "Lainnya"
-    const sizeRange = v["Size Range"];
-    const isLainnya = !sizeRange || sizeRange.toString().trim().toLowerCase() === "lainnya";
-    
-    // Jika iya, jangan masukkan ke tabel
-    if (isLainnya) return false;
+  // Logika Filter & Sort Diperbarui: Tampilkan semua, tapi taruh anomali di bawah
+  const processedData = vesselData
+    .filter(v => {
+      // 1. Logika pencarian text tetap berjalan untuk SEMUA data
+      const matchSearch = v.VESSEL_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          v.NO_PKK?.includes(searchTerm);
+      return matchSearch;
+    })
+    .sort((a, b) => {
+      // 2. Logika Sorting: Deteksi data kosong atau "Lainnya"
+      const aRange = a["Size Range"];
+      const bRange = b["Size Range"];
+      
+      const isABad = !aRange || aRange.toString().trim().toLowerCase() === "lainnya";
+      const isBBad = !bRange || bRange.toString().trim().toLowerCase() === "lainnya";
 
-    // 2. Jika bukan "Lainnya", lanjutkan ke logika pencarian text
-    const matchSearch = v.VESSEL_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                        v.NO_PKK?.includes(searchTerm);
-    return matchSearch;
-  });
+      // Jika A jelek/kosong dan B bagus, A didorong ke bawah (return 1)
+      if (isABad && !isBBad) return 1;
+      // Jika A bagus dan B jelek/kosong, B didorong ke bawah (return -1)
+      if (!isABad && isBBad) return -1;
+      
+      // Jika keduanya sama-sama bagus atau sama-sama jelek, biarkan urutan aslinya
+      return 0; 
+    });
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(processedData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTableData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+  const currentTableData = processedData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="w-full h-full flex flex-col space-y-6 font-['Poppins',sans-serif]">
@@ -76,49 +86,54 @@ const VesselDatabase = ({ vesselData }) => {
             
             <tbody className="divide-y divide-slate-100">
               {currentTableData.length > 0 ? (
-                currentTableData.map((v, i) => (
-                  <tr key={i} className="hover:bg-slate-50/70 transition-colors group">
-                    
-                    {/* Identity */}
-                    <td className="px-6 py-3.5">
-                      <div className="flex flex-col">
-                        <span className="text-xs font-bold text-slate-800 uppercase group-hover:text-[#00529B] transition-colors">{v.VESSEL_NAME || 'N/A'}</span>
-                        <span className="text-[10px] font-medium text-slate-400 mt-0.5">{v.NO_PKK || '-'}</span>
-                      </div>
-                    </td>
-                    
-                    {/* Size Range */}
-                    <td className="px-6 py-3.5">
-                      <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider border border-slate-200">
-                        {v["Size Range"] || 'N/A'}
-                      </span>
-                    </td>
-                    
-                    {/* DWT / GRT */}
-                    <td className="px-6 py-3.5 text-[11px] font-bold text-slate-600 uppercase tracking-tight">
-                      {v.DWT || 0} <span className="text-slate-300 mx-1 font-medium">/</span> {v.GRT || 0}
-                    </td>
-                    
-                    {/* MCR */}
-                    <td className="px-6 py-3.5">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700">
-                        <Gauge size={12} className="text-slate-400" />
-                        {v["Propulsion MCR (kW)"] || 0}
-                      </div>
-                    </td>
-                    
-                    {/* Emisi (Pure Value) */}
-                    <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
-                      {v.Total_CO2 || 0}
-                    </td>
-                    <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
-                      {v.Total_N2O || 0}
-                    </td>
-                    <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
-                      {v.Total_CH4 || 0}
-                    </td>
-                  </tr>
-                ))
+                currentTableData.map((v, i) => {
+                  // Tambahkan visual indikator opsional jika data jelek
+                  const isBadData = !v["Size Range"] || v["Size Range"].toString().trim().toLowerCase() === "lainnya";
+                  
+                  return (
+                    <tr key={i} className={`transition-colors group ${isBadData ? 'bg-slate-50/50 opacity-75' : 'hover:bg-slate-50/70'}`}>
+                      
+                      {/* Identity */}
+                      <td className="px-6 py-3.5">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-slate-800 uppercase group-hover:text-[#00529B] transition-colors">{v.VESSEL_NAME || 'N/A'}</span>
+                          <span className="text-[10px] font-medium text-slate-400 mt-0.5">{v.NO_PKK || '-'}</span>
+                        </div>
+                      </td>
+                      
+                      {/* Size Range */}
+                      <td className="px-6 py-3.5">
+                        <span className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider border ${isBadData ? 'bg-red-50 text-red-500 border-red-100' : 'bg-slate-100 text-slate-600 border-slate-200'}`}>
+                          {v["Size Range"] || 'UNKNOWN'}
+                        </span>
+                      </td>
+                      
+                      {/* DWT / GRT */}
+                      <td className="px-6 py-3.5 text-[11px] font-bold text-slate-600 uppercase tracking-tight">
+                        {v.DWT || 0} <span className="text-slate-300 mx-1 font-medium">/</span> {v.GRT || 0}
+                      </td>
+                      
+                      {/* MCR */}
+                      <td className="px-6 py-3.5">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700">
+                          <Gauge size={12} className="text-slate-400" />
+                          {v["Propulsion MCR (kW)"] || 0}
+                        </div>
+                      </td>
+                      
+                      {/* Emisi (Pure Value) */}
+                      <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
+                        {v.Total_CO2 || 0}
+                      </td>
+                      <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
+                        {v.Total_N2O || 0}
+                      </td>
+                      <td className="px-6 py-3.5 text-[11px] font-bold text-slate-800">
+                        {v.Total_CH4 || 0}
+                      </td>
+                    </tr>
+                  )
+                })
               ) : (
                 <tr>
                   <td colSpan="7" className="px-6 py-12 text-center text-sm font-medium text-slate-400">
@@ -133,7 +148,7 @@ const VesselDatabase = ({ vesselData }) => {
         {/* PAGINATION FOOTER */}
         <div className="bg-white border-t border-slate-200 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
           <div className="text-[11px] font-medium text-slate-500">
-            Menampilkan <span className="font-bold text-slate-800">{filteredData.length === 0 ? 0 : startIndex + 1}</span> hingga <span className="font-bold text-slate-800">{Math.min(startIndex + itemsPerPage, filteredData.length)}</span> dari <span className="font-bold text-slate-800">{filteredData.length}</span> entri
+            Menampilkan <span className="font-bold text-slate-800">{processedData.length === 0 ? 0 : startIndex + 1}</span> hingga <span className="font-bold text-slate-800">{Math.min(startIndex + itemsPerPage, processedData.length)}</span> dari <span className="font-bold text-slate-800">{processedData.length}</span> entri
           </div>
           
           <div className="flex items-center gap-2">
