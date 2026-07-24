@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 const VesselStatistics = ({ vesselData, mode }) => {
   const [showAllFactors, setShowAllFactors] = useState(false);
 
-  // LOGIKA DATA: TIDAK DIUBAH
+  // Ekstraksi data podium ekstremum.
   const podiumVessels = useMemo(() => {
     const sorted = [...vesselData].sort((a, b) => b.Total_CO2 - a.Total_CO2).slice(0, 5);
     return [
@@ -20,7 +20,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
     ];
   }, [vesselData]);
 
-  // LOGIKA DATA: TIDAK DIUBAH
+  // Kalkulasi bobot kontribusi parameter.
   const processedFactors = useMemo(() => {
     const rawFactors = [
       { name: "Emisi AE (Sandar)", r: 0.99, icon: <Wind size={14}/>, note: "Pelepasan emisi Auxiliary Engine saat kapal diam di dermaga." },
@@ -44,11 +44,11 @@ const VesselStatistics = ({ vesselData, mode }) => {
     })).sort((a, b) => b.contribution - a.contribution); 
   }, []);
 
-  // UI MODE: TOP 5 KAPAL (PODIUM ENTERPRISE)
+  // Modul antarmuka agregasi tertinggi.
   if (mode === "top5") {
     return (
       <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm w-full h-full font-['Poppins',sans-serif] flex flex-col">
-        {/* Header Bersih */}
+        {/* Header komponen. */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Top 5 Kapal Kontributor Emisi</h3>
@@ -56,7 +56,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
           </div>
         </div>
 
-        {/* Podium Layout - Dibuat lebih struktural dan rapi */}
+        {/* Visualisasi hierarki struktural. */}
         <div className="flex flex-col md:flex-row justify-center items-end gap-4 min-h-[350px] mt-auto">
           {podiumVessels.map((item, i) => {
             const isRank1 = item.rank === 1;
@@ -72,7 +72,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
                 className={`flex flex-col items-center w-full md:w-1/5 relative ${isRank1 ? 'z-20 -mt-8' : 'z-10'}`}
               >
                 
-                {/* Kartu Data Kapal */}
+                {/* Panel rincian entitas. */}
                 <div className={`w-full p-4 mb-3 rounded-xl border flex flex-col items-center transition-all hover:shadow-md
                   ${isRank1 ? 'bg-white border-blue-200 shadow-[0_10px_30px_rgba(0,82,155,0.12)]' : 'bg-slate-50 border-slate-100'}`}
                 >
@@ -101,7 +101,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
                   </div>
                 </div>
 
-                {/* Balok Podium Bawah */}
+                {/* Struktur pondasi hierarki. */}
                 <div className={`w-[85%] rounded-t-lg flex flex-col items-center justify-start pt-3 border-x border-t ${heightClass}
                   ${isRank1 ? 'bg-[#00529B] border-[#00529B]' : 'bg-slate-100 border-slate-200'}`}
                 >
@@ -117,11 +117,10 @@ const VesselStatistics = ({ vesselData, mode }) => {
     );
   }
 
-  // UI MODE: MATRIKS KORELASI (List Profesional)
   return (
     <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm h-full flex flex-col overflow-hidden font-['Poppins',sans-serif]">
       
-      {/* Header Section */}
+      {/* Header antarmuka analisis. */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h3 className="text-sm font-semibold text-slate-800">Faktor Penyumbang Emisi Kapal Peti Kemas</h3>
@@ -129,7 +128,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
         </div>
       </div>
 
-      {/* List Parameter */}
+      {/* Rincian matriks parameter. */}
       <div className="flex-1 overflow-y-auto pr-3 space-y-1 custom-scrollbar">
         {processedFactors.slice(0, showAllFactors ? processedFactors.length : 5).map((f, i) => (
           <motion.div 
@@ -164,7 +163,7 @@ const VesselStatistics = ({ vesselData, mode }) => {
               </div>
             </div>
 
-            {/* Progress Bar Kontribusi Relatif */}
+            {/* Bilah progres kontribusi. */}
             <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }} 

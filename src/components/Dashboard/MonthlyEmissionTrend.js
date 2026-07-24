@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-// Tooltip yang sudah diubah menjadi clean & enterprise look
+// Komponen kustomisasi tooltip
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
@@ -10,7 +10,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           {label} 2025
         </p>
         <div className="space-y-2.5">
-          {/* Karbon Dioksida (CO2) */}
+          {/* Metrik karbon dioksida */}
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00529B]"></div>
@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             </span>
           </div>
           
-          {/* Dinitrogen Oksida (N2O) */}
+          {/* Metrik dinitrogen oksida */}
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#D97706]"></div>
@@ -32,7 +32,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             </span>
           </div>
           
-          {/* Metana (CH4) */}
+          {/* Metrik gas metana */}
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#059669]"></div>
@@ -50,16 +50,19 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const MonthlyEmissionTrend = ({ vesselData }) => {
+  // Agregasi data temporal
   const chartData = useMemo(() => {
     if (!vesselData) return [];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     const grouped = months.map(m => ({ month: m, CO2: 0, N2O: 0, CH4: 0 }));
 
     vesselData.forEach(v => {
+      // Ekstraksi entitas waktu
       const dateString = v.BKTMOD_DATE_START ? v.BKTMOD_DATE_START.replace(/\//g, '-') : null;
       const date = new Date(dateString);
       if (!isNaN(date.getTime()) && date.getFullYear() === 2025) {
         const monthIndex = date.getMonth();
+        // Akumulasi emisi bulanan
         grouped[monthIndex].CO2 += (Number(v.Total_CO2) || 0);
         grouped[monthIndex].N2O += (Number(v.Total_N2O) || 0);
         grouped[monthIndex].CH4 += (Number(v.Total_CH4) || 0);
@@ -69,12 +72,16 @@ const MonthlyEmissionTrend = ({ vesselData }) => {
   }, [vesselData]);
 
   return (
+    // Kontainer utama
     <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm transition-all hover:border-slate-300 flex flex-col min-h-[420px] font-['Poppins',sans-serif]">
-        <div className="mb-6">
+        
+      {/* Header komponen */}
+      <div className="mb-6">
         <h3 className="text-sm font-semibold text-slate-800">Tren Emisi Kapal Peti Kemas Tahun 2025</h3>
         <p className="text-[10px] text-slate-500 font-medium mt-0.5">Analisis temporal parameter emisi berdasarkan log aktivitas bulanan.</p>
       </div>
 
+      {/* Visualisasi grafik area */}
       <div className="h-[280px] w-full mt-2">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -121,7 +128,7 @@ const MonthlyEmissionTrend = ({ vesselData }) => {
         </ResponsiveContainer>
       </div>
 
-      {/* Legenda Bawah Minimalis */}
+      {/* Legenda grafik */}
       <div className="mt-auto pt-6 flex gap-6 justify-center">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#00529B]" />

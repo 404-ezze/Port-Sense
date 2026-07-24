@@ -5,13 +5,16 @@ import MonthlyEmissionTrend from './MonthlyEmissionTrend';
 
 const DigitalTwinOverview = ({ vesselData }) => {
   const stats = useMemo(() => {
+    // Validasi data input
     if (!vesselData || vesselData.length === 0) return null;
 
+    // Konstanta GWP emisi
     const GWP_CH4 = 28;
     const GWP_N2O = 265;
     const ESTIMASI_BERTHING_JAM = 1.5; 
     const totalCalls = vesselData.length;
 
+    // Inisialisasi akumulator
     let mnv_total = 0;
     let brt_total = 0;
     let hot_total = 0;
@@ -19,24 +22,32 @@ const DigitalTwinOverview = ({ vesselData }) => {
     let grand_total_n2o = 0;
     let grand_total_ch4 = 0;
 
+    // Iterasi dataset kapal
     vesselData.forEach(v => {
+      // Total ekuivalen CO2e
       const rowCO2e = (v.Total_CO2 || 0) + (v.Total_CH4 * GWP_CH4) + (v.Total_N2O * GWP_N2O);
+      
+      // Kalkulasi rasio energi
       const mnvEnergy = (v.ME_Energy_Mnv_kWh || 0) + (v.AE_Energy_Mnv_kWh || 0);
       const berthEnergy = (v.AE_Energy_Berth_kWh || 0);
       const totalEnergy = mnvEnergy + berthEnergy;
       const ratioMnv = totalEnergy > 0 ? mnvEnergy / totalEnergy : 0;
       const ratioSandar = totalEnergy > 0 ? berthEnergy / totalEnergy : 0;
 
+      // Estimasi emisi manuver
       const mnvCO2Base = (v.ME_Emissions_Mnv_CO2 || 0) + (v.AE_Emissions_Mnv_CO2 || 0);
       const mnvCO2e = mnvCO2Base + (v.Total_CH4 * ratioMnv * GWP_CH4) + (v.Total_N2O * ratioMnv * GWP_N2O);
       
+      // Normalisasi durasi sandar
       const durationBerth = v.Duration_Berthing_Hr || 1;
       const ratioBerthingDuration = Math.min(ESTIMASI_BERTHING_JAM / durationBerth, 1);
       const berthCO2Base = (v.AE_Emissions_Berth_CO2 || 0) * ratioBerthingDuration;
       const berthingCO2e = berthCO2Base + (v.Total_CH4 * ratioSandar * ratioBerthingDuration * GWP_CH4) + (v.Total_N2O * ratioSandar * ratioBerthingDuration * GWP_N2O);
 
+      // Ekstraksi emisi hotelling
       const hotellingCO2e = rowCO2e - mnvCO2e - berthingCO2e;
 
+      // Agregasi nilai fasa
       mnv_total += mnvCO2e;
       brt_total += berthingCO2e;
       hot_total += hotellingCO2e;
@@ -45,8 +56,10 @@ const DigitalTwinOverview = ({ vesselData }) => {
       grand_total_ch4 += (v.Total_CH4 || 0);
     });
 
+    // Total akumulasi CO2e
     const totalCO2e_Grand = mnv_total + brt_total + hot_total;
 
+    // Pemetaan data keluaran
     return {
       co2e: totalCO2e_Grand.toLocaleString(undefined, { maximumFractionDigits: 0 }),
       mnv: (mnv_total / totalCalls).toFixed(4),
@@ -64,19 +77,21 @@ const DigitalTwinOverview = ({ vesselData }) => {
     };
   }, [vesselData]);
 
+  // Validasi render
   if (!stats) return null;
 
   return (
+    // Kontainer utama
     <div className="p-6 md:p-8 bg-slate-50 min-h-screen space-y-8 animate-in fade-in duration-500 font-['Poppins',sans-serif] text-slate-800">
 
-      {/* Header */}
+      {/* Header dasbor */}
       <div className="flex flex-col pb-5 border-b border-slate-200">
           <div className="flex flex-col">
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 mb-1.5">
           Dashboard
         </h2>
           
-          {/* Subheadline */}
+          {/* Subheadline judul */}
           <p className="text-[11px] md:text-xs text-slate-500 font-medium">
             Pemantauan Jejak Karbon & Emisi Kapal Peti Kemas Berbasis Aktivitas (Activity-Based) di Jakarta International Container Terminal (JICT) Tahun 2025
           </p>
@@ -84,6 +99,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        {/* Panel emisi total */}
         <div className="lg:col-span-2 bg-[#00529B] rounded-xl p-6 shadow-sm text-white flex flex-col justify-between relative overflow-hidden">
           <div className="relative z-10">
             <p className="text-sm font-medium text-blue-100 mb-2">Total Emisi Tahunan</p>
@@ -96,7 +112,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"></div>
         </div>
         
-        {/* KOTAK FASE MANUVER (Perbaikan Teks) */}
+        {/* Kartu metrik manuver */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#6366F1] rounded-r-md"></div>
           <div className="pl-3">
@@ -109,7 +125,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           </div>
         </div>
 
-        {/* KOTAK FASE SANDAR (Perbaikan Teks) */}
+        {/* Kartu metrik sandar */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#06B6D4] rounded-r-md"></div>
           <div className="pl-3">
@@ -122,7 +138,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           </div>
         </div>
 
-        {/* KOTAK FASE DERMAGA (Perbaikan Teks) */}
+        {/* Kartu metrik dermaga */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#10B981] rounded-r-md"></div>
           <div className="pl-3">
@@ -137,6 +153,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
 
       </div>
 
+      {/* Rincian parameter gas */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="bg-slate-50/80 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
           <h3 className="text-sm font-semibold text-slate-800">Parameter Emisi Gas Spesifik</h3>
@@ -182,6 +199,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Modul visualisasi spasial */}
         <div className="lg:col-span-2 bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col min-h-[500px]">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -194,11 +212,13 @@ const DigitalTwinOverview = ({ vesselData }) => {
           </div>
         </div>
 
+        {/* Modul rincian aktivitas */}
         <div className="lg:col-span-1">
           <ActivityBreakdown chartData={stats.chartData} totalCO2e={stats.co2e} />
         </div>
       </div>
 
+      {/* Modul tren bulanan */}
       <div className="pb-4">
         <MonthlyEmissionTrend vesselData={vesselData} />
       </div>

@@ -2,11 +2,10 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const ActivityBreakdown = ({ chartData, totalCO2e }) => {
-  // PERBAIKAN 1: Definisi warna dinamis untuk menghindari hardcode index data
+  // Definisi warna dinamis
   const COLORS = ['#6366F1', '#06B6D4', '#10B981'];
 
-  // PERBAIKAN 2: Mapping data secara aman. 
-  // Mencegah error 'undefined' jika chartData kosong saat menarik data dari database
+  // Pemetaan data aman
   const displayData = chartData && chartData.length > 0 
     ? chartData.map((item, index) => ({
         ...item,
@@ -14,22 +13,22 @@ const ActivityBreakdown = ({ chartData, totalCO2e }) => {
       }))
     : [];
 
-  // PERBAIKAN 3: Fallback value ke 0 jika value undefined agar kalkulasi total tidak menghasilkan NaN
+  // Kalkulasi nilai total
   const totalValue = displayData.reduce((acc, curr) => acc + (curr.value || 0), 0);
 
   return (
-    // Container disesuaikan dengan map (rounded-xl, border-slate-200, shadow-sm, min-h-[500px])
+    // Kontainer utama
     <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm h-full flex flex-col min-h-[500px]">
       
-      {/* HEADER SECTION - Diselaraskan dengan gaya header map */}
+      {/* Header komponen */} 
       <div className="mb-6">
         <h3 className="text-sm font-semibold text-slate-800">Distribusi Emisi Berdasarkan Aktivitas Kapal</h3>
         <p className="text-[10px] text-slate-500 font-medium mt-0.5">Komposisi gas rumah kaca (CO2e) per fase operasional.</p>
       </div>
 
-      {/* CHART SECTION */}
+      {/* Visualisasi grafik */}
       <div className="h-[240px] w-full relative mb-4">
-        {/* Angka di tengah donat dirapikan tipografinya */}
+        {/* Indikator nilai pusat */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-0.5">Total</p>
           <p className="text-3xl font-bold text-slate-900 tracking-tight">
@@ -75,7 +74,7 @@ const ActivityBreakdown = ({ chartData, totalCO2e }) => {
         </ResponsiveContainer>
       </div>
 
-      {/* LEGEND & PERCENTAGE SECTION - Dibuat clean list tanpa bulatan berbayang */}
+      {/* Legenda dan persentase */}
       <div className="space-y-2 mt-2">
         {displayData.map((item) => (
           <div key={item.name} className="flex justify-between items-center p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100/50 transition-colors">
@@ -94,7 +93,7 @@ const ActivityBreakdown = ({ chartData, totalCO2e }) => {
         ))}
       </div>
 
-      {/* STRATEGIC CONCLUSION ALERT - Diubah jadi banner enterprise */}
+      {/* Kesimpulan  */}
       <div className="mt-auto pt-6">
         <div className="p-3.5 rounded-lg bg-blue-50 border border-blue-100">
           <p className="text-[10px] text-[#00529B] leading-relaxed">

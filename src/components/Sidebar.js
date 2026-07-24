@@ -14,8 +14,10 @@ const Sidebar = ({
   activeTab,    
   setActiveTab  
 }) => {
+  // Validasi status panel
   if (!isOpen) return null;
 
+  // Format kelas navigasi
   const getNavLinkClass = (tabName) => `
     w-full flex items-center gap-4 px-8 py-4 transition-all duration-300 group relative
     ${activeTab === tabName 
@@ -23,14 +25,16 @@ const Sidebar = ({
       : 'text-white/60 hover:bg-white/5 hover:text-white font-medium'}
   `;
 
+  // Indikator visual aktif
   const activeIndicator = (tabName) => activeTab === tabName && (
     <div className="absolute left-0 w-1.5 h-6 bg-white rounded-r-full shadow-[0_0_15px_rgba(255,255,255,0.8)]" />
   );
 
   return (
+    // Kontainer panel samping
     <aside className="w-80 bg-[#184680] text-white flex flex-col shadow-2xl z-[2000] h-screen transition-all relative border-r border-white/10 font-['Poppins',sans-serif]">
       
-      {/* HEADER BRANDING */}
+      {/* Identitas visual merek */}
       <div className="p-10 bg-[#184680] flex flex-col items-center">
         <div className="relative mb-6">
           <div 
@@ -51,7 +55,7 @@ const Sidebar = ({
         </div>
       </div>
 
-      {/* MENU NAVIGASI */}
+      {/* Modul navigasi */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         <nav className="space-y-1">      
           <div className="space-y-1">
@@ -84,7 +88,7 @@ const Sidebar = ({
         </nav>
       </div>
 
-      {/* FOOTER */}
+      {/* Atribusi pengembang */}
       <div className="p-8 bg-transparent border-t border-white/5">
         <div className="flex flex-col gap-1 px-1">
           <p className="text-[7px] font-black text-white/30 uppercase tracking-[0.2em]">Dirancang & Dikembangkan oleh</p>
@@ -96,7 +100,7 @@ const Sidebar = ({
         </div>
       </div>
 
-      {/* TOMBOL COLLAPSE */}
+      {/* Pengendali visibilitas panel */}
       <button 
         onClick={() => setIsOpen(false)}
         className="absolute -right-3 top-1/2 -translate-y-1/2 bg-white text-[#184680] rounded-full p-2 shadow-2xl border border-blue-50 hover:scale-110 transition-all z-[2001]"
