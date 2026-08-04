@@ -5,12 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const IntegratedChartColumn = ({ title, data, barDataKey, statDataKey, color, extremes }) => {
   return (
     <div className="flex flex-col h-full font-['Poppins',sans-serif] w-full">
-      {/* Header grafik. */}
       <div className="mb-6">
         <h4 className="text-sm font-semibold text-slate-800 tracking-tight">{title}</h4>
       </div>
-      
-      {/* Area visualisasi. */}
       <div className="h-[200px] w-full mb-6">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
@@ -51,9 +48,7 @@ const IntegratedChartColumn = ({ title, data, barDataKey, statDataKey, color, ex
         </ResponsiveContainer>
       </div>
 
-      {/* Area ekstremum. */}
       <div className="mt-auto pt-5 border-t border-slate-100 flex flex-col gap-4">
-        {/* Nilai maksimum. */}
         <div className="flex justify-between items-center group">
           <div className="flex flex-col">
             <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kunjungan Tunggal Tertinggi</span>
@@ -69,7 +64,6 @@ const IntegratedChartColumn = ({ title, data, barDataKey, statDataKey, color, ex
           </div>
         </div>
 
-        {/* Nilai minimum. */}
         <div className="flex justify-between items-center group">
           <div className="flex flex-col">
             <span className="text-[10px] font-medium text-slate-400 mb-0.5">Kunjungan Tunggal Terendah</span>
@@ -101,8 +95,6 @@ const SizeDistribution = ({ vesselData }) => {
       if (validData.length === 0) {
         return { max: null, min: null };
       }
-
-      // Pengurutan nilai emisi.
       const sorted = [...validData].sort((a, b) => Number(b[key]) - Number(a[key]));
       
       return {
@@ -151,8 +143,7 @@ const SizeDistribution = ({ vesselData }) => {
 
   return (
     <div className="w-full bg-white rounded-xl p-8 md:p-10 shadow-sm border border-slate-200 flex flex-col font-['Poppins',sans-serif]">
-      
-      {/* Header antarmuka. */}
+
       <div className="mb-8 pb-6 border-b border-slate-100 flex justify-between items-center">
         <div>
           <h3 className="text-sm font-semibold text-slate-800">
@@ -162,10 +153,7 @@ const SizeDistribution = ({ vesselData }) => {
         </div>
       </div>
 
-      {/* Grid matriks utama. */}
       <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 w-full">
-        
-        {/* Kolom metrik CO2. */}
         <div className="pb-8 lg:pb-0 lg:pr-8 flex">
           <IntegratedChartColumn 
             title="Karbondioksida (CO₂)" 
@@ -177,7 +165,6 @@ const SizeDistribution = ({ vesselData }) => {
           />
         </div>
 
-        {/* Kolom metrik N2O. */}
         <div className="py-8 lg:py-0 lg:px-8 flex">
           <IntegratedChartColumn 
             title="Dinitrogen Oksida (N₂O)" 
@@ -189,7 +176,6 @@ const SizeDistribution = ({ vesselData }) => {
           />
         </div>
 
-        {/* Kolom metrik CH4. */}
         <div className="pt-8 lg:pt-0 lg:pl-8 flex">
           <IntegratedChartColumn 
             title="Metana (CH₄)" 

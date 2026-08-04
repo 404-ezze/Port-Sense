@@ -57,7 +57,6 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
   return (
     <div className="w-full bg-white rounded-xl p-8 border border-slate-200 shadow-sm h-full flex flex-col overflow-hidden font-['Poppins',sans-serif]">
       
-      {/* Header antarmuka utama */}
       <div className="mb-6 flex justify-between items-start border-b border-slate-100 pb-5">
         <div>
           <h3 className="text-sm font-semibold text-slate-800">
@@ -69,7 +68,6 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
         </div>
       </div>
 
-      {/* Kontainer daftar rute */}
       <div className="flex-1 overflow-y-auto space-y-4 pr-3 custom-scrollbar">
         {routeStats.map((route, idx) => {
           const isTop3 = idx < 3;
@@ -81,8 +79,7 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
 
           return (
             <div key={idx} className="group rounded-xl p-5 border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm transition-all duration-300">
-              
-              {/* Metrik peringkat kontribusi */}
+
               <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-50">
                 <div className={`px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider border ${rankColor}`}>
                   Peringkat {idx + 1}
@@ -94,17 +91,14 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
                     </p>
                     <p className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mt-1">Beban CO₂e</p>
                   </div>
-                  {/* Bilah progres kontribusi */}
                   <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden shrink-0">
                      <div className={`h-full rounded-full ${barColor}`} style={{ width: `${route.contribution}%` }} />
                   </div>
                 </div>
               </div>
 
-              {/* Tata letak rincian */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-                
-                {/* Panel informasi spasial */}
+
                 <div className="col-span-1 lg:col-span-5 flex flex-col lg:border-r lg:border-slate-100 lg:pr-4">
                   <div className="flex items-start gap-3 mb-4">
                     <MapPin size={14} className="text-slate-400 shrink-0 mt-0.5" />
@@ -128,10 +122,8 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
                   </div>
                 </div>
 
-                {/* Panel agregasi emisi */}
                 <div className="col-span-1 lg:col-span-7 flex flex-col justify-center">
-                  
-                  {/* Matriks emisi gas */}
+
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     <div className="bg-slate-50/70 p-3 rounded-lg border border-slate-100 text-center">
                       <p className="text-[9px] font-semibold text-slate-400 uppercase mb-1">CO₂ (Ton)</p>
@@ -147,7 +139,6 @@ const RouteEmissionAnalysis = ({ vesselData }) => {
                     </div>
                   </div>
 
-                  {/* Entitas penyumbang tertinggi */}
                   <div className="flex justify-between items-center bg-blue-50/40 p-3.5 rounded-lg border border-blue-100/50">
                      <div className="flex items-center gap-3 w-full min-w-0 pr-3">
                         <div className={`p-2 rounded-md shrink-0 ${isTop3 ? 'bg-blue-100 text-[#00529B]' : 'bg-white border border-slate-200 text-slate-400'}`}>

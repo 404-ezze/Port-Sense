@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-// Komponen kustomisasi tooltip
+// Komponen tooltip
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
@@ -10,7 +10,6 @@ const CustomTooltip = ({ active, payload, label }) => {
           {label} 2025
         </p>
         <div className="space-y-2.5">
-          {/* Metrik karbon dioksida */}
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00529B]"></div>
@@ -20,8 +19,7 @@ const CustomTooltip = ({ active, payload, label }) => {
               {payload[0].value.toFixed(2)} <span className="text-[9px] font-medium text-slate-400">Ton</span>
             </span>
           </div>
-          
-          {/* Metrik dinitrogen oksida */}
+
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#D97706]"></div>
@@ -32,7 +30,6 @@ const CustomTooltip = ({ active, payload, label }) => {
             </span>
           </div>
           
-          {/* Metrik gas metana */}
           <div className="flex justify-between items-center gap-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#059669]"></div>
@@ -72,16 +69,13 @@ const MonthlyEmissionTrend = ({ vesselData }) => {
   }, [vesselData]);
 
   return (
-    // Kontainer utama
     <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm transition-all hover:border-slate-300 flex flex-col min-h-[420px] font-['Poppins',sans-serif]">
-        
-      {/* Header komponen */}
+
       <div className="mb-6">
         <h3 className="text-sm font-semibold text-slate-800">Tren Emisi Kapal Peti Kemas Tahun 2025</h3>
         <p className="text-[10px] text-slate-500 font-medium mt-0.5">Analisis temporal parameter emisi berdasarkan log aktivitas bulanan.</p>
       </div>
 
-      {/* Visualisasi grafik area */}
       <div className="h-[280px] w-full mt-2">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -128,7 +122,6 @@ const MonthlyEmissionTrend = ({ vesselData }) => {
         </ResponsiveContainer>
       </div>
 
-      {/* Legenda grafik */}
       <div className="mt-auto pt-6 flex gap-6 justify-center">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#00529B]" />

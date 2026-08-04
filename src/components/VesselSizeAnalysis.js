@@ -6,7 +6,7 @@ const VesselSizeAnalysis = ({ vesselData }) => {
     
     const stats = {};
     
-    // Pemrosesan nilai numerik.
+    // Pemrosesan nilai numerik
     const parseNum = (val) => {
       if (val === undefined || val === null) return 0;
       if (typeof val === 'number') return val;
@@ -25,13 +25,10 @@ const VesselSizeAnalysis = ({ vesselData }) => {
           avgMCR: 0, mcrSum: 0
         };
       }
-      
-      // Diagnostik data anomali.
+
       if (size === "Lainnya" && stats[size].count < 3) {
         console.log(`[DATA DIAGNOSTIK LAINNYA - SAMPEL KE-${stats[size].count + 1}]:`, v);
       }
-      
-      // Toleransi variasi kunci (Case-insensitive).
       const co2Val = v.Total_CO2 || v.total_co2 || v.CO2 || v.co2 || 0;
       const n2oVal = v.Total_N2O || v.total_n2o || v.N2O || v.n2o || 0;
       const ch4Val = v.Total_CH4 || v.total_ch4 || v.CH4 || v.ch4 || 0;
@@ -75,8 +72,6 @@ const VesselSizeAnalysis = ({ vesselData }) => {
 
   return (
     <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm max-h-[600px] flex flex-col overflow-hidden font-['Poppins',sans-serif]">
-      
-      {/* Modul header antarmuka. */}
       <div className="mb-6 flex justify-between items-start">
         <div>
           <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
@@ -88,8 +83,6 @@ const VesselSizeAnalysis = ({ vesselData }) => {
           {sizeStats.length} Kategori
         </div>
       </div>
-
-      {/* Header tabel matriks. */}
       <div className="grid grid-cols-12 gap-4 pb-2 border-b border-slate-200 text-[9px] font-bold text-slate-400 uppercase tracking-widest px-2">
         <div className="col-span-5">Kapasitas (TEUs)</div>
         <div className="col-span-7 grid grid-cols-3 text-right">
@@ -99,15 +92,12 @@ const VesselSizeAnalysis = ({ vesselData }) => {
         </div>
       </div>
 
-      {/* Kontainer daftar klasifikasi. */}
       <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
         {sizeStats.map((item, idx) => (
           <div 
             key={idx} 
             className="grid grid-cols-12 gap-4 py-4 px-2 border-b border-slate-100 last:border-0 hover:bg-slate-50/70 transition-colors items-center group rounded-lg"
           >
-            
-            {/* Panel informasi dimensi. */}
             <div className="col-span-5 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00529B]" />
@@ -124,8 +114,7 @@ const VesselSizeAnalysis = ({ vesselData }) => {
                 </span>
               </div>
             </div>
-
-            {/* Panel agregasi metrik. */}
+            
             <div className="col-span-7 grid grid-cols-3 text-right">
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-bold text-slate-800 group-hover:text-[#00529B] transition-colors">

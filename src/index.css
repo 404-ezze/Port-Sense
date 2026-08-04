@@ -6,7 +6,7 @@
 :root {
   --pelindo-blue: #00529B;
   --pelindo-dark: #003366;
-  --pelindo-accent: #FAB005; /* Warna kuning emas Pelindo untuk highlight */
+  --pelindo-accent: #FAB005; 
   --bg-main: #F0F4F8;
 }
 
@@ -17,7 +17,6 @@
   }
 }
 
-/* --- Layout Fixer --- */
 .app-container {
   display: flex;
   height: 100vh;
@@ -25,7 +24,6 @@
   overflow: hidden;
 }
 
-/* --- Sidebar Styling --- */
 .sidebar-container {
   background: linear-gradient(180deg, var(--pelindo-blue) 0%, var(--pelindo-dark) 100%);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -45,7 +43,6 @@
   @apply bg-white/5 border-white/30;
 }
 
-/* --- Map Styling (Point 2) --- */
 .map-wrapper {
   position: relative;
   border-bottom: 2px solid #E2E8F0;
@@ -55,11 +52,9 @@
 .leaflet-container {
   width: 100%;
   height: 100%;
-  /* Tone peta lebih cool/profesional */
   filter: grayscale(0.3) contrast(1.1) brightness(1.02);
 }
 
-/* --- Analytics Card Styling --- */
 .analytics-card {
   @apply bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all;
 }
@@ -68,7 +63,6 @@
   @apply shadow-md border-blue-100;
 }
 
-/* --- Custom Scrollbar --- */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -80,7 +74,6 @@
   border-radius: 10px;
 }
 
-/* --- UI Decoration --- */
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);

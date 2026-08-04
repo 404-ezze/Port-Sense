@@ -62,7 +62,7 @@ const MapView = ({ vessels = [] }) => {
     return Object.values(routeMap).map((r) => {
       const totalCO2e = r.co2_total + (r.ch4_total * GWP_CH4) + (r.n2o_total * GWP_N2O);
       return { ...r, co2e: totalCO2e };
-    }).sort((a, b) => b.calls - a.calls); // Urutkan berdasarkan kunjungan
+    }).sort((a, b) => b.calls - a.calls); 
   }, [vessels]);
 
   const grandTotalCO2e = useMemo(() => {
@@ -88,8 +88,7 @@ const MapView = ({ vessels = [] }) => {
 
           return (
             <div key={route.id} className="flex items-center w-full relative group">
-              
-              {/* Node titik asal */}
+        
               <div 
                 className="w-48 shrink-0 p-3 rounded-2xl transition-all cursor-pointer hover:bg-slate-50 relative z-30"
                 onMouseEnter={() => setHoveredRouteId(route.id)}
@@ -108,7 +107,6 @@ const MapView = ({ vessels = [] }) => {
                   </p>
                 </div>
 
-                {/* Komponen tooltip */}
                 {hoveredRouteId === route.id && (
                   <div 
                     className={`absolute bg-white/95 backdrop-blur-sm p-5 rounded-2xl border border-slate-200 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.15)] pointer-events-none z-[9999] min-w-[340px] max-w-[340px] animate-fadeIn ${
@@ -129,23 +127,19 @@ const MapView = ({ vessels = [] }) => {
                     </div>
                     
                     <div className="space-y-4">
-                      {/* Total emisi rute */}
                       <div>
                         <p className="text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
                           A. Total Beban Emisi Rute
                         </p>
                         <div className="grid grid-cols-3 gap-2">
-                          {/* Metrik karbon dioksida */}
                           <div className="bg-blue-50/40 rounded-xl p-2.5 border border-blue-100/50 text-center">
                             <p className="text-[9px] font-bold text-blue-500 mb-1">CO₂ (Ton)</p>
                             <p className="text-xs font-bold text-slate-800">{route.co2_total.toFixed(4)}</p>
                           </div>
-                          {/* Metrik dinitrogen oksida */}
                           <div className="bg-amber-50/40 rounded-xl p-2.5 border border-amber-100/50 text-center">
                             <p className="text-[9px] font-bold text-amber-500 mb-1">N₂O (Ton)</p>
                             <p className="text-xs font-bold text-slate-800">{route.n2o_total.toFixed(4)}</p>
                           </div>
-                          {/* Metrik gas metana */}
                           <div className="bg-emerald-50/40 rounded-xl p-2.5 border border-emerald-100/50 text-center">
                             <p className="text-[9px] font-bold text-emerald-500 mb-1">CH₄ (Ton)</p>
                             <p className="text-xs font-bold text-slate-800">{route.ch4_total.toFixed(4)}</p>
@@ -189,19 +183,12 @@ const MapView = ({ vessels = [] }) => {
                 )}
               </div>
 
-              {/* Visualisasi jalur spasial */}
               <div className="flex-1 mx-3 relative flex items-center h-16 justify-center z-10">
-                
-                {/* Dasar aliran Sankey */}
                 <div 
                   className={`absolute w-full bg-gradient-to-r ${color.gradient} to-transparent rounded-full transition-all duration-500 opacity-20 group-hover:opacity-70`}
                   style={{ height: `${flowHeight}px` }}
                 />
-                
-                {/* Garis rute navigasi */}
                 <div className="absolute w-full border-t-2 border-dashed border-slate-300 opacity-80 group-hover:opacity-100 group-hover:border-slate-400 transition-all duration-500" />
-
-                {/* Animasi entitas kapal */}
                 <div 
                   className="absolute left-0 -translate-y-1/2 flex items-center justify-center pointer-events-none transition-all duration-500 opacity-0 group-hover:opacity-100"
                   style={{
@@ -219,8 +206,6 @@ const MapView = ({ vessels = [] }) => {
                 </div>
 
               </div>
-
-              {/* Node titik tujuan */}
               <div className="w-52 shrink-0 text-right p-3 rounded-2xl relative z-10 flex flex-col justify-center bg-transparent group-hover:bg-slate-50/50 transition-colors">
                 <div className="flex items-center justify-end gap-1.5 mb-1">
                   <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">Titik Tujuan</p>
@@ -239,7 +224,6 @@ const MapView = ({ vessels = [] }) => {
         })}
       </div>
 
-      {/* Footer antarmuka */}
       <div className="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center px-2">
         <div className="flex items-center gap-2 text-[10px] font-semibold text-slate-500">
           <ArrowRight size={14} className="text-[#00529B]" /> Matriks Relokasi Emisi

@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 
 // Konstanta nilai GWP.
-const GWP = { CO2: 1, CH4: 27.2, N2O: 273 };
+const GWP = { CO2: 1, CH4: 28, N2O: 265 };
 const NET_OPS_REDUCTION = { CO2: 0.85, CH4: 0.90, N2O: 0.88 };
 const MAX_FUEL_REDUCTION = { CO2: 0.25, CH4: 0.05, N2O: 0.10 };
 const MAX_AE_EFFICIENCY = 0.15;
@@ -139,7 +139,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
     return v < b.min || v > b.max;
   };
 
-  // Konfigurasi antarmuka pengguna.
   const sliderConfig = [
     {
       key: 'aeEmissions',
@@ -169,8 +168,7 @@ const ShorePowerSimulation = ({ vesselData }) => {
 
   return (
     <div className="w-full bg-white rounded-xl p-8 border border-slate-200 shadow-sm h-full flex flex-col overflow-hidden font-['Poppins',sans-serif]">
-      
-      {/* Header antarmuka utama. */}
+
       <div className="mb-8 border-b border-slate-100 pb-5">
         <h3 className="text-base font-semibold text-slate-800 tracking-tight">
           Mesin Simulasi Mitigasi
@@ -180,10 +178,8 @@ const ShorePowerSimulation = ({ vesselData }) => {
         </p>
       </div>
 
-      {/* Tata letak grid. */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 overflow-y-auto pr-3 custom-scrollbar">
-        
-        {/* Panel parameter kebijakan. */}
+
         <div className="flex flex-col gap-6 w-full">
           
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex-1">
@@ -246,7 +242,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
             </div>
           </div>
 
-          {/* Panel konteks operasional. */}
           <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 flex items-start gap-3">
             <div className="mt-0.5 text-[#00529B] shrink-0">
               <Info size={16} />
@@ -262,7 +257,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
           </div>
         </div>
 
-        {/* Panel proyeksi mitigasi. */}
         <div className="flex flex-col gap-6 w-full">
           
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex-1 flex flex-col">
@@ -273,8 +267,7 @@ const ShorePowerSimulation = ({ vesselData }) => {
             </div>
 
             <div className="space-y-8 flex-1">
-              
-              {/* Visualisasi reduksi CO2. */}
+
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2.5">
@@ -297,7 +290,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
                 </div>
               </div>
 
-              {/* Visualisasi reduksi CH4. */}
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2.5">
@@ -320,7 +312,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
                 </div>
               </div>
 
-              {/* Visualisasi reduksi N2O. */}
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2.5">
@@ -344,7 +335,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
               </div>
             </div>
 
-            {/* Agregasi total CO2e. */}
             <div className="mt-8 pt-5 border-t border-slate-100">
               <div className="bg-slate-50 p-5 rounded-lg flex items-center justify-between border border-slate-200">
                 <div className="flex flex-col gap-1 pr-4">
@@ -365,7 +355,6 @@ const ShorePowerSimulation = ({ vesselData }) => {
             </div>
           </div>
 
-          {/* Panel rekomendasi strategis. */}
           <div className="bg-[#00529B] p-6 rounded-xl text-white shadow-md text-left">
             <div className="flex items-center gap-2 mb-2.5">
               <ShieldCheck size={16} className="text-blue-300" />

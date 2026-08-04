@@ -81,17 +81,12 @@ const DigitalTwinOverview = ({ vesselData }) => {
   if (!stats) return null;
 
   return (
-    // Kontainer utama
     <div className="p-6 md:p-8 bg-slate-50 min-h-screen space-y-8 animate-in fade-in duration-500 font-['Poppins',sans-serif] text-slate-800">
-
-      {/* Header dasbor */}
       <div className="flex flex-col pb-5 border-b border-slate-200">
           <div className="flex flex-col">
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 mb-1.5">
           Dashboard
         </h2>
-          
-          {/* Subheadline judul */}
           <p className="text-[11px] md:text-xs text-slate-500 font-medium">
             Pemantauan Jejak Karbon & Emisi Kapal Peti Kemas Berbasis Aktivitas (Activity-Based) di Jakarta International Container Terminal (JICT) Tahun 2025
           </p>
@@ -111,8 +106,7 @@ const DigitalTwinOverview = ({ vesselData }) => {
           <p className="text-xs text-blue-200 mt-6 relative z-10">Total akumulasi nilai GWP dari seluruh log aktivitas.</p>
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"></div>
         </div>
-        
-        {/* Kartu metrik manuver */}
+
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#6366F1] rounded-r-md"></div>
           <div className="pl-3">
@@ -125,7 +119,6 @@ const DigitalTwinOverview = ({ vesselData }) => {
           </div>
         </div>
 
-        {/* Kartu metrik sandar */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#06B6D4] rounded-r-md"></div>
           <div className="pl-3">
@@ -138,7 +131,6 @@ const DigitalTwinOverview = ({ vesselData }) => {
           </div>
         </div>
 
-        {/* Kartu metrik dermaga */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-center relative">
           <div className="absolute left-0 top-4 bottom-4 w-[3px] bg-[#10B981] rounded-r-md"></div>
           <div className="pl-3">
@@ -153,7 +145,6 @@ const DigitalTwinOverview = ({ vesselData }) => {
 
       </div>
 
-      {/* Rincian parameter gas */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="bg-slate-50/80 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
           <h3 className="text-sm font-semibold text-slate-800">Parameter Emisi Gas Spesifik</h3>
@@ -199,7 +190,6 @@ const DigitalTwinOverview = ({ vesselData }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Modul visualisasi spasial */}
         <div className="lg:col-span-2 bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col min-h-[500px]">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -211,14 +201,11 @@ const DigitalTwinOverview = ({ vesselData }) => {
             <MapView vessels={vesselData} />
           </div>
         </div>
-
-        {/* Modul rincian aktivitas */}
         <div className="lg:col-span-1">
           <ActivityBreakdown chartData={stats.chartData} totalCO2e={stats.co2e} />
         </div>
       </div>
 
-      {/* Modul tren bulanan */}
       <div className="pb-4">
         <MonthlyEmissionTrend vesselData={vesselData} />
       </div>
